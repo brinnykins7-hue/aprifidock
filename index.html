@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aprifidock — Discover and stream anime. Clean, fast, dark." />
+  <title>Aprifidock</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            slate: { 950: '#020617' },
+            sky:   { 400: '#38bdf8' },
+          },
+          fontFamily: {
+            display: ['"Syne"', 'sans-serif'],
+            body:    ['"DM Sans"', 'sans-serif'],
+            mono:    ['"JetBrains Mono"', 'monospace'],
+          },
+          keyframes: {
+            shimmer: { '0%': { backgroundPosition: '-700px 0' }, '100%': { backgroundPosition: '700px 0' } },
+            fadeUp:  { '0%': { opacity: 0, transform: 'translateY(18px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+            pulse2:  { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.4 } },
+          },
+          animation: {
+            shimmer: 'shimmer 1.4s infinite linear',
+            fadeUp:  'fadeUp 0.45s ease forwards',
+            pulse2:  'pulse2 1.6s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-[#0f172a] text-slate-100 font-body antialiased min-h-screen">
+
+  <!-- ══════════════════ NAVBAR ══════════════════ -->
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 nav-glass border-b border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+
+        <!-- Logo -->
+        <a href="#/home" class="flex items-center gap-2.5 shrink-0 group" aria-label="Aprifidock home">
+          <div class="logo-mark w-8 h-8 rounded-lg flex items-center justify-center bg-sky-400 text-slate-950 font-display font-black text-sm select-none group-hover:scale-110 transition-transform duration-200">A</div>
+          <span class="font-display font-bold text-lg tracking-tight hidden sm:block">
+            Apri<span class="text-sky-400">fidock</span>
+          </span>
+        </a>
+
+        <!-- Search bar (desktop) -->
+        <div class="flex-1 max-w-xl hidden sm:block">
+          <div class="search-container relative">
+            <svg class="search-icon absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+              id="search-input"
+              type="search"
+              placeholder="Search anime…"
+              autocomplete="off"
+              spellcheck="false"
+              class="search-input w-full bg-slate-800/70 border border-slate-700/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-400/70 focus:bg-slate-800 transition-all duration-200"
+            />
+            <div id="search-spinner" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2">
+              <div class="w-3.5 h-3.5 border-2 border-sky-400/30 border-t-sky-400 rounded-full animate-spin"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop nav links -->
+        <nav class="hidden md:flex items-center gap-1">
+          <a href="#/home"    class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-sky-400 hover:bg-slate-800/70 transition-all duration-150" data-route="home">Home</a>
+          <a href="#/top"     class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-sky-400 hover:bg-slate-800/70 transition-all duration-150" data-route="top">Top Anime</a>
+          <a href="#/search"  class="nav-link px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-sky-400 hover:bg-slate-800/70 transition-all duration-150" data-route="search">Search</a>
+        </nav>
+
+        <!-- Mobile: search icon + hamburger -->
+        <div class="flex items-center gap-2 sm:hidden">
+          <button id="mobile-search-btn" aria-label="Search" class="p-2 rounded-lg text-slate-400 hover:text-sky-400 hover:bg-slate-800 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </button>
+          <button id="hamburger" aria-label="Menu" class="p-2 rounded-lg text-slate-400 hover:text-sky-400 hover:bg-slate-800 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+
+      </div><!-- /flex row -->
+    </div><!-- /container -->
+
+    <!-- Mobile search bar (hidden by default) -->
+    <div id="mobile-search-bar" class="hidden px-4 pb-3 sm:hidden">
+      <div class="relative">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input
+          id="mobile-search-input"
+          type="search"
+          placeholder="Search anime…"
+          autocomplete="off"
+          class="w-full bg-slate-800 border border-slate-700/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-400/70 transition-all duration-200"
+        />
+      </div>
+    </div>
+
+    <!-- Mobile nav menu (hidden by default) -->
+    <div id="mobile-menu" class="hidden border-t border-slate-800/60 sm:hidden">
+      <nav class="flex flex-col px-4 py-3 gap-1">
+        <a href="#/home"   class="mobile-nav-link px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors" data-route="home">🏠 Home</a>
+        <a href="#/top"    class="mobile-nav-link px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors" data-route="top">🏆 Top Anime</a>
+        <a href="#/search" class="mobile-nav-link px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:text-sky-400 hover:bg-slate-800 transition-colors" data-route="search">🔍 Search</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ══════════════════ MAIN CONTENT ══════════════════ -->
+  <main id="app" class="pt-16 min-h-screen">
+    <!-- Routes render here -->
+  </main>
+
+  <!-- ══════════════════ TOAST ══════════════════ -->
+  <div id="toast" class="toast fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-slate-200 shadow-2xl opacity-0 pointer-events-none transition-opacity duration-300 flex items-center gap-2.5 max-w-sm">
+    <svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    <span id="toast-msg"></span>
+  </div>
+
+  <!-- ══════════════════ SCROLL-TO-TOP ══════════════════ -->
+  <button id="scroll-top" aria-label="Scroll to top" class="hidden fixed bottom-6 right-6 z-40 w-10 h-10 rounded-full bg-sky-400 text-slate-950 shadow-lg hover:bg-sky-300 transition-all duration-200 items-center justify-center">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <!-- App script -->
+  <script src="app.js"></script>
+</body>
+</html>
